@@ -396,6 +396,15 @@ pub struct EpochInfoView {
 
 #[cfg_attr(feature = "deepsize_feature", derive(deepsize::DeepSizeOf))]
 #[derive(Serialize, Deserialize, Debug)]
+pub struct ChunkInfoView {
+    pub num_of_blocks_in_progress: usize,
+    pub num_of_chunks_in_progress: usize,
+    pub num_of_orphans: usize,
+    pub next_blocks_log: Vec<String>,
+}
+
+#[cfg_attr(feature = "deepsize_feature", derive(deepsize::DeepSizeOf))]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct DetailedDebugStatus {
     pub last_blocks: Vec<DebugBlockStatus>,
     pub network_info: NetworkInfoView,
@@ -405,6 +414,7 @@ pub struct DetailedDebugStatus {
     pub orphans: Vec<BlockStatusView>,
     pub blocks_with_missing_chunks: Vec<BlockStatusView>,
     pub epoch_info: EpochInfoView,
+    pub chunk_info: ChunkInfoView,
 }
 
 // TODO: add more information to status.
@@ -428,7 +438,7 @@ pub struct StatusResponse {
     pub sync_info: StatusSyncInfo,
     /// Validator id of the node
     pub validator_account_id: Option<AccountId>,
-    /// Information about last blocks, sync, epoch and chain info.
+    /// Information about last blocks, sync, epoch, chunk and chain info.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub detailed_debug_status: Option<DetailedDebugStatus>,
 }
